@@ -14,7 +14,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "mat-error-tailor": [
+        "dist/mat-error-tailor/mat-error-tailor",
+        "dist/mat-error-tailor"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

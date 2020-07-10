@@ -123,6 +123,50 @@
           }
         }
       }
-    }},
-  "defaultProject": "mat-error-tailor-playground"
+    },
+    "mat-error-tailor": {
+      "projectType": "library",
+      "root": "projects/mat-error-tailor",
+      "sourceRoot": "projects/mat-error-tailor/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/mat-error-tailor/tsconfig.lib.json",
+            "project": "projects/mat-error-tailor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/mat-error-tailor/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/mat-error-tailor/src/test.ts",
+            "tsConfig": "projects/mat-error-tailor/tsconfig.spec.json",
+            "karmaConfig": "projects/mat-error-tailor/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/mat-error-tailor/tsconfig.lib.json",
+              "projects/mat-error-tailor/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "mat-error-tailor-playground",
+  "cli": {
+    "analytics": false
+  }
 }
