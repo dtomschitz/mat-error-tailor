@@ -11,15 +11,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "paths": {
-      "mat-error-tailor": [
-        "dist/mat-error-tailor/mat-error-tailor",
-        "dist/mat-error-tailor"
-      ]
+      "mat-error-tailor": ["projects/mat-error-tailor/src/public-api"]
     }
   },
   "angularCompilerOptions": {

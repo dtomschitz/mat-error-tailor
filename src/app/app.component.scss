@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  width: 700px;
+  margin: 0 auto;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    mat-form-field {
+      width: 200px;
+    }
+  }
+}
