@@ -81,6 +81,8 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     }
     this.controlName = this.errorControlNameDirective?.controlName;
 
+    console.log(this.matErrorElementRef);
+
     const statusChanges$ = this.control.statusChanges.pipe(takeUntil(this.destroy$));
     const valueChanges$ = this.control.valueChanges;
     let errorsOnAsync$: Observable<any> = EMPTY;
@@ -93,7 +95,7 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     }
 
     if (this.controlErrorsOnBlur) {
-      errorsOnBlur$ = fromEvent(this.matErrorElementRef.nativeElement, 'focusout').pipe(
+      errorsOnBlur$ = fromEvent(this.matFormField._elementRef.nativeElement, 'focusout').pipe(
         switchMap(() => valueChanges$.pipe(startWith(true)))
       );
     }
@@ -121,6 +123,7 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
   }
 
   private setError(message: string) {
+    //this.matErrorElementRef.nativeElement.innerText = message
     this.renderer.setProperty(this.matErrorElementRef.nativeElement, 'innerText', message);
   }
 
