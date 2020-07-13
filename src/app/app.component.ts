@@ -13,7 +13,7 @@ export class AppComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.defaultForm = this.formBuilder.group({
-      required: ['', [Validators.maxLength(2), Validators.pattern('^[0-9]*$')]],
+      required: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       min: ['', Validators.min(10)],
       max: ['', Validators.max(20)],
       minLength: ['', Validators.minLength(5)],
@@ -22,10 +22,10 @@ export class AppComponent {
     });
 
     this.formGroup = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      lastName: ['', Validators.required, Validators.pattern('[a-zA-Z ]*')],
     });
 
-    this.singleControl = this.formBuilder.control('');
+    this.singleControl = this.formBuilder.control('', [Validators.required]);
   }
 }

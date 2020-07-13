@@ -123,17 +123,12 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
 
     let error = this.getDefaultError(validationKey);
 
-    let groupOrControlError: FormError;
     if (groupName && controlName) {
-      groupOrControlError = this.getGroupError(groupName, controlName, validationKey);
+      error = this.getGroupError(groupName, controlName, validationKey) ?? error;
     }
 
     if (!groupName && controlName) {
-      groupOrControlError = this.getSingleControlError(controlName, validationKey);
-    }
-
-    if (groupOrControlError) {
-      error = groupOrControlError;
+      error = this.getSingleControlError(controlName, validationKey) ?? error;
     }
 
     if (error) {

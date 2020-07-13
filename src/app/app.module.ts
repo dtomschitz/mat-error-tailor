@@ -32,10 +32,37 @@ import { AppComponent } from './app.component';
       groupErrors: [
         {
           selector: 'formGroup',
-          errors: {},
+          controls: [
+            {
+              selector: ['firstName', 'lastName'],
+              errors: {
+                pattern: 'Only characters are allowed!',
+              },
+            },
+
+            {
+              selector: 'firstName',
+              errors: {
+                required: 'Enter your first name',
+              },
+            },
+            {
+              selector: 'lastName',
+              errors: {
+                required: 'Enter your last name',
+              },
+            },
+          ],
         },
       ],
-      controlErrors: [],
+      controlErrors: [
+        {
+          selector: 'singleControl',
+          errors: {
+            required: 'Custom required message',
+          },
+        },
+      ],
     }),
   ],
   providers: [],
