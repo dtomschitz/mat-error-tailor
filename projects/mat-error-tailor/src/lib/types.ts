@@ -1,30 +1,20 @@
 export interface MatErrorTailorConfig {
-  defaultErrors?: {
-    errors: FormErrors;
-    sortBy?: SortBy;
-  };
+  defaultErrors?: Record<string, FormError>;
   groupErrors?: FormGroupErrors[];
   controlErrors?: FormControlErrors[];
 }
 
 export interface FormGroupErrors {
-  match: string | string[];
-  controls: FormControlErrors[];
+  selector: string | string[];
+  controls?: FormControlErrors[];
+  errors?: FormErrors;
 }
 
 export interface FormControlErrors {
-  match: string | string[];
+  selector: string | string[];
   errors: FormErrors;
-  sortBy?: SortBy;
 }
 
-export interface FormError {
-  type: string;
-  message: string | ((error: any) => string);
-  priority?: number;
-}
+export type FormError = string | ((error: any) => string);
 
-export type FormErrors = { [error: string]: FormError };
-
-export type CompareFunction = (a: FormError, b: FormError) => number;
-export type SortBy = 'priority' | CompareFunction;
+export type FormErrors = Record<string, FormError>;

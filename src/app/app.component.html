@@ -9,13 +9,39 @@
   <mat-form-field>
     <mat-label>Validators.min(10)</mat-label>
     <input formControlName="min" matInput>
-    <mat-hint></mat-hint>
-    <mat-error matErrorTailor></mat-error>^
+    <mat-error matErrorTailor></mat-error>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Validators.min(20)</mat-label>
+    <mat-label>Validators.max(20)</mat-label>
     <input formControlName="max" matInput>
-    <mat-hint></mat-hint>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.minLength(5)</mat-label>
+    <input formControlName="minLength" matInput>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.maxLength(5)</mat-label>
+    <input formControlName="maxLength" matInput>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.pattern('^[0-9]*$')</mat-label>
+    <input formControlName="pattern" matInput>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
+</form>
+<h2>Form Group Errors</h2>
+<form class="form-group" [formGroup]="formGroup" matErrorGroupName="formGroup" autocomplete="off">
+  <mat-form-field>
+    <mat-label>Validators.required</mat-label>
+    <input formControlName="firstName" matInput>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.required</mat-label>
+    <input formControlName="lastName" matInput>
     <mat-error matErrorTailor></mat-error>
   </mat-form-field>
 </form>

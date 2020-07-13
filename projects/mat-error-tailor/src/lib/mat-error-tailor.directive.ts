@@ -14,7 +14,7 @@ import { FormGroup, FormControl, ValidationErrors, NgControl } from '@angular/fo
 import { MatFormField } from '@angular/material/form-field';
 import { Subject, merge, Observable, EMPTY, fromEvent } from 'rxjs';
 import { takeUntil, startWith, switchMap } from 'rxjs/operators';
-import { MatErrorTailorConfig, FormError, FormGroupErrors, FormControlErrors, SortBy } from './types';
+import { MatErrorTailorConfig, FormError, FormGroupErrors, FormControlErrors, FormErrors } from './types';
 import { MatErrorTrailorConfigProvider } from './providers';
 
 @Directive({ selector: '[matErrorGroupName]' })
@@ -54,19 +54,8 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     this.ngControl = this.matFormField._control.ngControl;
 
     if (!this.config.defaultErrors && !this.config.controlErrors && !this.config.groupErrors) {
-      // TODO: throw warning
-      console.warn('ERRORR 0');
       return;
     }
-
-    /*if (
-      this.ngControl.control.parent instanceof FormGroup &&
-      (!this.errorGoupNameDirective || this.errorGoupNameDirective.groupName === '')
-    ) {
-      // TODO: throw warning
-      console.warn('ERRORR 1');
-      return;
-    }*/
 
     if (
       this.ngControl.control.parent instanceof FormGroup &&
@@ -81,12 +70,9 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
       !this.ngControl.parent &&
       (!this.errorControlNameDirective || this.errorControlNameDirective.controlName === '')
     ) {
-      // TODO: throw warning
-      console.warn('ERRORR 2');
       return;
     }
     this.controlName = this.errorControlNameDirective?.controlName ?? this.ngControl.name.toString();
-
 
     const statusChanges$ = this.ngControl.statusChanges.pipe(takeUntil(this.destroy$));
     const valueChanges$ = this.ngControl.valueChanges;
@@ -131,20 +117,19 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     this.renderer.setProperty(this.matErrorElementRef.nativeElement, 'innerText', message);
   }
 
-  private getErrorMessage(
-    groupName: string | undefined,
-    controlName: string | undefined,
-    controlErrors: ValidationErrors
-  ): string {
-    let error = this.getDefaultError(controlErrors);
+  private getErrorMessage(groupName: string, controlName: string, validationErrors: ValidationErrors): string {
+    const validationKey = Object.keys(validationErrors)[0];
+    const validationError = Object.values(validationErrors)[0];
+
+    let error = this.getDefaultError(validationKey);
 
     let groupOrControlError: FormError;
     if (groupName && controlName) {
-      groupOrControlError = this.getGroupError(groupName, controlName, controlErrors);
+      groupOrControlError = this.getGroupError(groupName, controlName, validationKey);
     }
 
     if (!groupName && controlName) {
-      groupOrControlError = this.getControlError(controlName, controlErrors);
+      groupOrControlError = this.getSingleControlError(controlName, validationKey);
     }
 
     if (groupOrControlError) {
@@ -152,37 +137,37 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     }
 
     if (error) {
-      if (typeof error.message === 'function') {
-        return error.message(controlErrors[error.type]);
+      if (typeof error === 'function') {
+        return error(validationError);
       }
-      return error.message;
+      return error;
     }
   }
 
-  private getDefaultError(validationErrors: ValidationErrors): FormError {
-    return this.getError(this.config.defaultErrors.errors, validationErrors, this.config.defaultErrors.sortBy);
+  private getDefaultError(validatorKey: string): FormError {
+    return this.getError(this.config.defaultErrors, validatorKey);
   }
 
-  private getGroupError(groupName: string, controlName: string, validationErrors: ValidationErrors): FormError {
+  private getGroupError(groupName: string, controlName: string, validatorKey: string): FormError {
     const control = this.findNestedFormControlErrors(groupName, controlName);
     if (control) {
-      return this.getError(control.errors, validationErrors, control.sortBy);
+      return this.getError(control.errors, validatorKey);
     }
   }
 
-  private getControlError(controlName: string, validationErrors: ValidationErrors): FormError {
+  private getSingleControlError(controlName: string, validatorKey: string): FormError {
     const control = this.findFormControlErrors(controlName);
     if (control) {
-      return this.getError(control.errors, validationErrors, control.sortBy);
+      return this.getError(control.errors, validatorKey);
     }
   }
 
-  private getError(formErrors: FormError[], validationErrors: ValidationErrors, sortBy?: SortBy): FormError {
-    let errors = this.filterErrors(formErrors, validationErrors);
-    if (sortBy) {
-      errors = this.sortErrors(errors, sortBy);
-    }
-    return errors[0] || undefined;
+  private getError(formErrors: FormErrors, validatorKey: string): FormError {
+    return (
+      Object.keys(formErrors)
+        .filter((key) => key === validatorKey)
+        .map((key) => formErrors[key])[0] ?? undefined
+    );
   }
 
   private findFormControlErrors(controlName: string): FormControlErrors {
@@ -195,28 +180,11 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
 
   private nameMatch(name: string) {
     return (value: FormGroupErrors | FormControlErrors): boolean => {
-      if (Array.isArray(value.match)) {
-        return value.match.includes(name);
+      if (Array.isArray(value.selector)) {
+        return value.selector.includes(name);
       }
 
-      return value.match === name;
+      return value.selector === name;
     };
-  }
-
-  private filterErrors(errors: FormError[], validationErrors: ValidationErrors) {
-    return errors.filter((error) => validationErrors[error.type] !== undefined);
-  }
-
-  private sortErrors(errors: FormError[], sortBy: SortBy): FormError[] {
-    if (typeof sortBy === 'function') {
-      return errors.sort(sortBy);
-    }
-
-    return errors.sort((a, b) => {
-      if (a.priority && b.priority) {
-        return b.priority - a.priority;
-      }
-      return -1;
-    });
   }
 }

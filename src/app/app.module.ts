@@ -20,22 +20,22 @@ import { AppComponent } from './app.component';
     MatDividerModule,
     MatErrorTailorModule.forRoot({
       defaultErrors: {
-        errors: [
-          {
-            type: 'required',
-            message: 'This field is required!',
-          },
-          {
-            type: 'min',
-            message: (error) => `The value cannot be lower than ${error.min}! You entered: ${error.actual}`,
-          },
-          {
-            type: 'max',
-            message: (error) => `The value cannot be heigher than ${error.max}! You entered: ${error.actual}`,
-          },
-        ],
-        
+        required: 'This field is required!',
+        min: (error) => `The value cannot be lower than ${error.min}! You entered: ${error.actual}`,
+        max: (error) => `The value cannot be heigher than ${error.max}! You entered: ${error.actual}`,
+        minlength: (error) =>
+          `The value cannot be shorter than ${error.requiredLength}! You entered: ${error.actualLength} chars`,
+        maxlength: (error) =>
+          `The value cannot be longer than ${error.requiredLength}! You entered: ${error.actualLength} chars`,
+        pattern: 'Only numbers are allowed!',
       },
+      groupErrors: [
+        {
+          selector: 'formGroup',
+          errors: {},
+        },
+      ],
+      controlErrors: [],
     }),
   ],
   providers: [],
