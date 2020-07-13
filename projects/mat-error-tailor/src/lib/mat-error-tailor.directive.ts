@@ -10,21 +10,21 @@ import {
   Self,
   Renderer2,
 } from '@angular/core';
-import { AbstractControl, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, ValidationErrors, NgControl } from '@angular/forms';
+import { MatFormField } from '@angular/material/form-field';
 import { Subject, merge, Observable, EMPTY, fromEvent } from 'rxjs';
 import { takeUntil, startWith, switchMap } from 'rxjs/operators';
-import { MatErrorTrailorConfigProvider } from './providers';
 import { MatErrorTailorConfig, FormError, FormGroupErrors, FormControlErrors, SortBy } from './types';
-import { MatFormField, MatError } from '@angular/material/form-field';
+import { MatErrorTrailorConfigProvider } from './providers';
 
-@Directive({ selector: '[errorGroupName]' })
+@Directive({ selector: '[matErrorGroupName]' })
 export class ErrorGroupNameDirective {
-  @Input('errorGroupName') groupName: string;
+  @Input('matErrorGroupName') groupName: string;
 }
 
-@Directive({ selector: '[errorControlName]' })
+@Directive({ selector: '[matErrorControlName]' })
 export class ErrorControlNameDirective {
-  @Input('errorControlName') controlName: string;
+  @Input('matErrorControlName') controlName: string;
 }
 
 @Directive({
@@ -37,7 +37,7 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
 
   private readonly destroy$: Subject<void> = new Subject<void>();
 
-  private control: AbstractControl;
+  private ngControl: NgControl;
   private groupName: string;
   private controlName: string;
 
@@ -51,8 +51,7 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.control = this.matFormField._control.ngControl.control;
-    console.log(this.control);
+    this.ngControl = this.matFormField._control.ngControl;
 
     if (!this.config.defaultErrors && !this.config.controlErrors && !this.config.groupErrors) {
       // TODO: throw warning
@@ -60,36 +59,42 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
       return;
     }
 
-    if (
-      this.control.parent instanceof FormGroup &&
+    /*if (
+      this.ngControl.control.parent instanceof FormGroup &&
       (!this.errorGoupNameDirective || this.errorGoupNameDirective.groupName === '')
     ) {
       // TODO: throw warning
       console.warn('ERRORR 1');
       return;
+    }*/
+
+    if (
+      this.ngControl.control.parent instanceof FormGroup &&
+      (!this.errorGoupNameDirective || this.errorGoupNameDirective.groupName === '')
+    ) {
+      return;
     }
     this.groupName = this.errorGoupNameDirective?.groupName;
 
     if (
-      this.control instanceof FormControl &&
-      !this.control.parent &&
+      this.ngControl instanceof FormControl &&
+      !this.ngControl.parent &&
       (!this.errorControlNameDirective || this.errorControlNameDirective.controlName === '')
     ) {
       // TODO: throw warning
       console.warn('ERRORR 2');
       return;
     }
-    this.controlName = this.errorControlNameDirective?.controlName;
+    this.controlName = this.errorControlNameDirective?.controlName ?? this.ngControl.name.toString();
 
-    console.log(this.matErrorElementRef);
 
-    const statusChanges$ = this.control.statusChanges.pipe(takeUntil(this.destroy$));
-    const valueChanges$ = this.control.valueChanges;
+    const statusChanges$ = this.ngControl.statusChanges.pipe(takeUntil(this.destroy$));
+    const valueChanges$ = this.ngControl.valueChanges;
     let errorsOnAsync$: Observable<any> = EMPTY;
     let errorsOnBlur$: Observable<any> = EMPTY;
     let errorsOnChange$: Observable<any> = EMPTY;
 
-    const hasAsyncValidator = !!this.control.asyncValidator;
+    const hasAsyncValidator = !!this.ngControl.asyncValidator;
     if (this.controlErrorsOnAsync && hasAsyncValidator) {
       errorsOnAsync$ = statusChanges$.pipe(startWith(true));
     }
@@ -107,7 +112,7 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     merge(errorsOnAsync$, errorsOnBlur$, errorsOnChange$)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        const controlErrors = this.control.errors;
+        const controlErrors = this.ngControl.errors;
         if (controlErrors) {
           const message = this.getErrorMessage(this.groupName, this.controlName, controlErrors);
           if (message) {
@@ -123,7 +128,6 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
   }
 
   private setError(message: string) {
-    //this.matErrorElementRef.nativeElement.innerText = message
     this.renderer.setProperty(this.matErrorElementRef.nativeElement, 'innerText', message);
   }
 

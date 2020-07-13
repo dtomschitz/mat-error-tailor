@@ -1,22 +1,29 @@
-<h2>Form Group</h2>
+<h2>Default Form Errors</h2>
 <mat-divider></mat-divider>
-<div class="form-group" [formGroup]="defaultForm" errorGroupName="defaultForm">
+<form class="form-group" [formGroup]="defaultForm" matErrorGroupName="defaultForm" autocomplete="off">
   <mat-form-field>
-    <mat-label>First Name</mat-label>
-    <input formControlName="firstName" matInput>
+    <mat-label>Validators.required</mat-label>
+    <input formControlName="required" matInput>
     <mat-error matErrorTailor></mat-error>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Last Name</mat-label>
-    <input formControlName="lastName" matInput>
+    <mat-label>Validators.min(10)</mat-label>
+    <input formControlName="min" matInput>
+    <mat-hint></mat-hint>
+    <mat-error matErrorTailor></mat-error>^
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.min(20)</mat-label>
+    <input formControlName="max" matInput>
+    <mat-hint></mat-hint>
     <mat-error matErrorTailor></mat-error>
   </mat-form-field>
-</div>
+</form>
 <h2>Single Control</h2>
 <div class="form-group">
   <mat-form-field>
     <mat-label>Single Control</mat-label>
     <input [formControl]="singleControl" matInput>
-    <mat-error matErrorTailor errorControlName="singleControl"></mat-error>
+    <mat-error matErrorTailor matErrorControlName="singleControl"></mat-error>
   </mat-form-field>
 </div>

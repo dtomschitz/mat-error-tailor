@@ -12,8 +12,11 @@ export class AppComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.defaultForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      required: ['', Validators.required],
+      min: ['', [Validators.min(10)]],
+      max: ['', [Validators.max(20)]],
+      minLength: ['', [Validators.minLength]],
+      maxLength: ['', [Validators.maxLength]],
     });
 
     this.singleControl = this.formBuilder.control('');

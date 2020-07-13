@@ -1,6 +1,16 @@
 {
   "name": "mat-error-tailor",
   "version": "0.0.1",
+  "author": "David Tomschitz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidddo/mat-error-tailor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidddo/mat-error-tailor/issues"
+  },
+  "homepage": "https://github.com/davidddo/mat-error-tailor",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^9.1.12",
     "@angular/core": "^9.1.12"

@@ -1,6 +1,6 @@
 export interface MatErrorTailorConfig {
   defaultErrors?: {
-    errors: FormError[];
+    errors: FormErrors;
     sortBy?: SortBy;
   };
   groupErrors?: FormGroupErrors[];
@@ -14,7 +14,7 @@ export interface FormGroupErrors {
 
 export interface FormControlErrors {
   match: string | string[];
-  errors: FormError[];
+  errors: FormErrors;
   sortBy?: SortBy;
 }
 
@@ -23,6 +23,8 @@ export interface FormError {
   message: string | ((error: any) => string);
   priority?: number;
 }
+
+export type FormErrors = { [error: string]: FormError };
 
 export type CompareFunction = (a: FormError, b: FormError) => number;
 export type SortBy = 'priority' | CompareFunction;

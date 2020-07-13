@@ -3,4 +3,5 @@
  */
 
 export * from './lib/mat-error-tailor.module';
+export * from './lib/mat-error-tailor.directive';
 export * from './lib/providers';
