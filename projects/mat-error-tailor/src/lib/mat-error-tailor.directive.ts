@@ -17,12 +17,12 @@ import { takeUntil, startWith, switchMap } from 'rxjs/operators';
 import { MatErrorTailorConfig, FormError, FormGroupErrors, FormControlErrors, FormErrors } from './types';
 import { MatErrorTrailorConfigProvider } from './providers';
 
-@Directive({ selector: '[matErrorGroupName]' })
+@Directive({ selector: 'formGroup[matErrorGroupName]' })
 export class ErrorGroupNameDirective {
   @Input('matErrorGroupName') groupName: string;
 }
 
-@Directive({ selector: '[matErrorControlName]' })
+@Directive({ selector: 'mat-error[matErrorControlName]' })
 export class ErrorControlNameDirective {
   @Input('matErrorControlName') controlName: string;
 }
@@ -166,11 +166,11 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
   }
 
   private findFormControlErrors(controlName: string): FormControlErrors {
-    return this.config?.controlErrors.find(this.nameMatch(controlName));
+    return this.config.controlErrors?.find(this.nameMatch(controlName));
   }
 
   private findNestedFormControlErrors(groupName: string, controlName: string): FormControlErrors {
-    return this.config?.groupErrors?.find(this.nameMatch(groupName))?.controls.find(this.nameMatch(controlName));
+    return this.config.groupErrors?.find(this.nameMatch(groupName))?.controls.find(this.nameMatch(controlName));
   }
 
   private nameMatch(name: string) {

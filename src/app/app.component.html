@@ -24,7 +24,7 @@
   <mat-form-field>
     <mat-label>Validators.maxLength(5)</mat-label>
     <input formControlName="maxLength" matInput>
-    <mat-error matErrorTailor></mat-error>
+    <mat-error matErrorTailor matErrorControlName="dAD"></mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Validators.pattern('^[0-9]*$')</mat-label>
@@ -50,6 +50,6 @@
   <mat-form-field>
     <mat-label>Single Control</mat-label>
     <input [formControl]="singleControl" matInput>
-    <mat-error matErrorTailor matErrorControlName="singleControl"></mat-error>
+    <mat-error matErrorTailor matErrorControlName="singleControddl"></mat-error>
   </mat-form-field>
 </div>

@@ -6,8 +6,7 @@ export interface MatErrorTailorConfig {
 
 export interface FormGroupErrors {
   selector: string | string[];
-  controls?: FormControlErrors[];
-  errors?: FormErrors;
+  controls: FormControlErrors[];
 }
 
 export interface FormControlErrors {
