@@ -17,12 +17,12 @@ import { takeUntil, startWith, switchMap } from 'rxjs/operators';
 import { MatErrorTailorConfig, FormError, FormGroupErrors, FormControlErrors, FormErrors } from './types';
 import { MatErrorTrailorConfigProvider } from './providers';
 
-@Directive({ selector: 'formGroup[matErrorGroupName]' })
+@Directive({ selector: '[matErrorGroupName]' })
 export class ErrorGroupNameDirective {
   @Input('matErrorGroupName') groupName: string;
 }
 
-@Directive({ selector: 'mat-error[matErrorControlName]' })
+@Directive({ selector: '[matErrorControlName]' })
 export class ErrorControlNameDirective {
   @Input('matErrorControlName') controlName: string;
 }
@@ -52,6 +52,10 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ngControl = this.matFormField._control.ngControl;
+
+    if (!this.ngControl) {
+      return;
+    }
 
     if (!this.config.defaultErrors && !this.config.controlErrors && !this.config.groupErrors) {
       return;
