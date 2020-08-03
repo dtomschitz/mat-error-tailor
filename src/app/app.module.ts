@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatErrorTailorModule } from 'mat-error-tailor';
@@ -17,10 +18,11 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatDividerModule,
     MatErrorTailorModule.forRoot({
       defaultErrors: {
-        // required: 'This field is required!',
+        required: 'This field is required!',
         min: (error) => `The value cannot be lower than ${error.min}! You entered: ${error.actual}`,
         max: (error) => `The value cannot be heigher than ${error.max}! You entered: ${error.actual}`,
         minlength: (error) =>

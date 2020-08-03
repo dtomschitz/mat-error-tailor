@@ -76,7 +76,11 @@ export class MatErrorTailorDirective implements OnInit, OnDestroy {
     ) {
       return;
     }
-    this.controlName = this.errorControlNameDirective?.controlName ?? this.ngControl.name.toString();
+
+    this.controlName = this.errorControlNameDirective?.controlName ?? this.ngControl?.name?.toString();
+    if (!this.controlName) {
+      return;
+    }
 
     const statusChanges$ = this.ngControl.statusChanges.pipe(takeUntil(this.destroy$));
     const valueChanges$ = this.ngControl.valueChanges;

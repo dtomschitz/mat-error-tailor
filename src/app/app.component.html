@@ -31,6 +31,15 @@
     <input formControlName="pattern" matInput>
     <mat-error matErrorTailor></mat-error>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Validators.required</mat-label>
+    <mat-select formControlName="matSelect">
+      <mat-option value="steak-0">Steak</mat-option>
+      <mat-option value="pizza-1">Pizza</mat-option>
+      <mat-option value="tacos-2">Tacos</mat-option>
+    </mat-select>
+    <mat-error matErrorTailor></mat-error>
+  </mat-form-field>
 </form>
 <h2>Form Group Errors</h2>
 <form class="form-group" [formGroup]="formGroup" matErrorGroupName="formGroup" autocomplete="off">
@@ -51,5 +60,17 @@
     <mat-label>Single Control</mat-label>
     <input [formControl]="singleControl" matInput>
     <mat-error matErrorTailor matErrorControlName="singleControddl"></mat-error>
+  </mat-form-field>
+</div>
+<h2>Single Select</h2>
+<div class="form-group">
+  <mat-form-field>
+    <mat-label>Single Select</mat-label>
+    <mat-select [formControl]="singleSelect">
+      <mat-option value="steak-0">Steak</mat-option>
+      <mat-option value="pizza-1">Pizza</mat-option>
+      <mat-option value="tacos-2">Tacos</mat-option>
+    </mat-select>
+    <mat-error matErrorTailor></mat-error>
   </mat-form-field>
 </div>
